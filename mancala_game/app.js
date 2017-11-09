@@ -1,17 +1,25 @@
 $(() => {
 
-  // adding player 1 holes to the mancala board (not the mancala)
+  // Creating initial mancala board setup
+  // player 1
   for (let i = 0; i < 6; i++) {
-    const $hole = $('<div>').addClass('hole-1');
-    $('#row-1').append($hole);
+    const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
+    $('#row-1').append($hole); // adding holes to the mancala board
+    for (let j = 0; j < 4; j++) {
+      const $marble = $('<div>').addClass('marble'); // creating marbles
+      $hole.append($marble); // adding marbles to the mancala board
+    }
   }
 
-  // adding player 2 holes to the mancala board (not the mancala)
+  // player 2
   for (let i = 0; i < 6; i++) {
-    const $hole = $('<div>').addClass('hole-1');
-    $('#row-2').append($hole);
+    const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
+    $('#row-2').append($hole); // adding holes to the mancala board
+    for (let j = 0; j < 4; j++) {
+      const $marble = $('<div>').addClass('marble'); // creating marbles
+      $hole.append($marble); // adding marbles to the mancala board
+    }
   }
-
 
 
 
