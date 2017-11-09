@@ -1,0 +1,2 @@
+# Mancala
+Interactive mancala game
