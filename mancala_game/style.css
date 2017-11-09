@@ -142,7 +142,7 @@ main > div {
 }
 
 
-.hole {
+.hole-1, .hole-2 {
   border-radius: 50%;
 	width: 115px;
 	height: 115px;
