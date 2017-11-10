@@ -41,8 +41,8 @@ $(() => {
       player2Marbles -= numMarbles; // reduce the number of marbles by the amount grabbed
     }
     console.log('it\s player', currentPlayer + '\'s turn');
-    console.log('player 1 now has', player1Marbles + ' marbles total');
-    console.log('player 2 now has', player2Marbles + ' marbles total');
+    console.log('player 1 total:', player1Marbles);
+    console.log('player 2 total:', player2Marbles);
     removeMarbles(event);
   }
 
@@ -50,23 +50,26 @@ $(() => {
   const removeMarbles = (event) => {
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
     $hole.children().remove(); // remove the marbles from the selected hole
-    console.log('the hole now has', $hole.children().length + ' marbles');
-    distributePlayerRowMarbles(event); // go on to distribute the marbles from the selected hole
+    // console.log('the hole now has', $hole.children().length + ' marbles');
+    distributeInitialPlayerRowMarbles(event); // go on to distribute the marbles from the selected hole
   }
 
 
-  const distributePlayerRowMarbles = (event) => { // function to distribute marbles along the player's row
-    const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
-    let limit = numMarbles; // create a variable to store the for loop iteration limit
+  const distributeInitialPlayerRowMarbles = (event) => { // function to distribute marbles along the player's row based on hole selected
+    // const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
+    console.log(numMarbles);
+    let limit = null; // create a variable to store the for loop iteration limit
     if (currentPlayer === 1) { // when the hole is in player 1's row
-      if (startIndex <= limit) { // if there are less holes to distribute marbles to, than marbles themselves
-        limit = startIndex; // only distribute the number of marbles that match the number of holes, hold the rest
+      if (startIndex <= numMarbles) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 0; // only distribute the number of marbles that match the number of holes, hold the rest
       }
-      for (let i = startIndex - 1; i >= startIndex - limit; i--) {
+      else {
+        limit = startIndex - numMarbles;
+      }
+      for (let i = startIndex - 1; i >= limit; i--) {
         const $marble = $('<div>').addClass('marble'); // create a marble
         $('#row-1').children().eq(i).append($marble); //add marble to the next hole
         player1Marbles++; // increase player 1's total marbles by 1
-        // console.log('Player 1 total marbles:', player1Marbles);
         numMarbles--; //decrease the marbles to distribute
         // console.log('marbles left to distribute:', numMarbles);
         endIndex = startIndex - limit; // set the index equal to the last hole where a marble was added
@@ -75,14 +78,16 @@ $(() => {
     else { // when the hole is in player 2's row
       // console.log('number of marbles:', limit);
       // console.log('number of holes:', $('#row-2').children().length - index - 1);
-      if ($('#row-2').children().length - startIndex - 1 <= limit) { // if there are less holes to distribute marbles to, than marbles themselves
-        limit = $('#row-2').children().length - 1; // only distribute the number of marbles that match the number of holes, hold the rest
+      if (5 - startIndex <= numMarbles) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 5; // only distribute the number of marbles that match the number of holes, hold the rest
+      }
+      else {
+        limit = startIndex + numMarbles;
       }
       for (let i = startIndex + 1; i <= limit; i++) { // if hole is in player 2's row
         const $marble = $('<div>').addClass('marble'); // create a marble
         $('#row-2').children().eq(i).append($marble); //add marble to the next hole
         player2Marbles++; // increase player 2's total marbles by 1
-        // console.log('Player 2 total marbles:', player1Marbles);
         numMarbles--;
         // console.log('marbles left to distribute:', numMarbles);
         endIndex = limit; // set the index equal to the last hole where a marble was added
@@ -90,6 +95,8 @@ $(() => {
     }
     console.log('ended at index', endIndex);
     console.log('there are', numMarbles + ' left to distribute');
+    console.log('player 1 total:', player1Marbles);
+    console.log('player 2 total:', player2Marbles);
     distributeMancalaMarbles(); // go on to distribute marbles to players's mancalas
   }
 
@@ -98,7 +105,6 @@ $(() => {
     if (numMarbles > 0 && currentPlayer === 1) { // if player 1 still has marbles to distribute
       $('#mancala-1').append($('<div>').addClass('marble')); // add a marble to their mancala
       player1Marbles++; // increase player 1's total marbles by 1
-      console.log('player 1 now has', player1Marbles + ' marbles total');
       numMarbles--; //decrease the marbles to distribute
       console.log('there are', numMarbles + ' left to distribute');
       distributeOpponentRowMarbles();
@@ -106,52 +112,116 @@ $(() => {
     else if (numMarbles > 0 && currentPlayer === 2) { // if player 2 still has marbles to distribute
       $('#mancala-2').append($('<div>').addClass('marble')); // add a marble to their mancala
       player2Marbles++; // increase player 2's total marbles by 1
-      console.log('player 2 now has', player2Marbles + ' marbles total');
       numMarbles--; //decrease the marbles to distribute
       console.log('there are', numMarbles + ' left to distribute');
       distributeOpponentRowMarbles();
     }
-    else {
-      console.log('no more marbles');
+    else { // there are no more marbles left to distribute
+      determinePlayer(); // go on to determine what player should go next
     }
+    console.log('there are', numMarbles + ' left to distribute');
+    console.log('player 1 total:', player1Marbles);
+    console.log('player 2 total:', player2Marbles);
   }
 
 
   const distributeOpponentRowMarbles = () => { // function to distribute marbles along the opponent's row
-    let limit = numMarbles; // create a variable to store the for loop iteration limit
+    let limit = null; // create a variable to store the for loop iteration limit
     if (numMarbles > 0 && currentPlayer === 1) { // if player 1 still has marbles to distribute
-      if (6 < limit) { // if there are less holes to distribute marbles to, than marbles themselves
+      if (6 < numMarbles) { // if there are less holes to distribute marbles to, than marbles themselves
         limit = 6; // only distribute the number of marbles that match the number of holes, hold the rest
+      }
+      else {
+        limit = numMarbles;
       }
       for (let i = 0; i < limit; i++) { // if hole is in player 2's row
         const $marble = $('<div>').addClass('marble'); // create a marble
         $('#row-2').children().eq(i).append($marble); //add marble to the next hole
         player2Marbles++; // increase player 2's total marbles by 1
-        // console.log('Player 2 total marbles:', player1Marbles);
         numMarbles--;
-        // console.log('marbles left to distribute:', numMarbles);
+        console.log('there are', numMarbles + ' left to distribute');
         endIndex = i; // set the index equal to the last hole where a marble was added
       }
+      distributePlayerRowMarbles();
     }
     else if (numMarbles > 0 && currentPlayer === 2) {
-      if (6 < limit) { // if there are less holes to distribute marbles to, than marbles themselves
-        limit = 6; // only distribute the number of marbles that match the number of holes, hold the rest
+      if (6 < numMarbles) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 0; // only distribute the number of marbles that match the number of holes, hold the rest
       }
-      for (let i = 5; i > 5 - limit; i--) {
+      else {
+        limit = 6 - numMarbles;
+      }
+      for (let i = 5; i >= limit; i--) {
         const $marble = $('<div>').addClass('marble'); // create a marble
         $('#row-1').children().eq(i).append($marble); //add marble to the next hole
         player1Marbles++; // increase player 1's total marbles by 1
-        // console.log('Player 1 total marbles:', player1Marbles);
         numMarbles--; //decrease the marbles to distribute
-        // console.log('marbles left to distribute:', numMarbles);
+        console.log('there are', numMarbles + ' left to distribute');
+        endIndex = i; // set the index equal to the last hole where a marble was added
+      }
+      distributePlayerRowMarbles();
+    }
+    else { // there are no more marbles left to distribute
+      determinePlayer(); // go on to determine what player should go next
+    }
+    console.log('ended at index', endIndex);
+    console.log('there are', numMarbles + ' left to distribute');
+    console.log('player 1 total:', player1Marbles);
+    console.log('player 2 total:', player2Marbles);
+  }
+
+
+  const distributePlayerRowMarbles = () => { // function to distribute marbles along the player's row
+    let limit = null; // create a variable to store the for loop iteration limit
+    if (numMarbles > 0 && currentPlayer === 1) { // when the hole is in player 1's row
+      if (6 < numMarbles) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 0; // only distribute the number of marbles that match the number of holes, hold the rest
+        }
+        else {
+          limit = 6 - numMarbles;
+        }
+        for (let i = 5; i >= limit; i--) {
+        const $marble = $('<div>').addClass('marble'); // create a marble
+        $('#row-1').children().eq(i).append($marble); //add marble to the next hole
+        player1Marbles++; // increase player 1's total marbles by 1
+        numMarbles--; //decrease the marbles to distribute
+        console.log('there are', numMarbles + ' left to distribute');
         endIndex = i; // set the index equal to the last hole where a marble was added
       }
     }
-    else {
-      determinePlayer();
+    else if (numMarbles > 0 && currentPlayer === 2) { // when the hole is in player 2's row
+      if (6 < numMarbles) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 6; // only distribute the number of marbles that match the number of holes, hold the rest
+        }
+        else {
+          limit = numMarbles;
+        }
+        for (let i = 0; i < limit; i++) { // if hole is in player 2's row
+        const $marble = $('<div>').addClass('marble'); // create a marble
+        $('#row-2').children().eq(i).append($marble); //add marble to the next hole
+        player2Marbles++; // increase player 2's total marbles by 1
+        numMarbles--;
+        console.log('there are', numMarbles + ' left to distribute');
+        endIndex = i; // set the index equal to the last hole where a marble was added
+      }
     }
-    console.log('index of the last hole is', endIndex);
+    console.log('ended at index', endIndex);
+    console.log('there are', numMarbles + ' left to distribute');
+    console.log('player 1 total:', player1Marbles);
+    console.log('player 2 total:', player2Marbles);
+    distributeMancalaMarbles(); // go on to distribute marbles to players's mancalas
   }
+
+
+
+
+
+
+
+
+
+
+
 
 
   const determinePlayer = () => { // function to determine which player goes next
