@@ -16,6 +16,9 @@ $(() => {
   // Tracks the location of the hole where marbles were grabbed
   let startIndex = null;
 
+  // Tracks the location of the hole where the last marble was added
+  let endIndex = null;
+
 
 
 
@@ -66,6 +69,7 @@ $(() => {
         // console.log('Player 1 total marbles:', player1Marbles);
         numMarbles--; //decrease the marbles to distribute
         // console.log('marbles left to distribute:', numMarbles);
+        endIndex = startIndex - limit; // set the index equal to the last hole where a marble was added
       }
     }
     else { // when the hole is in player 2's row
@@ -81,10 +85,12 @@ $(() => {
         // console.log('Player 2 total marbles:', player1Marbles);
         numMarbles--;
         // console.log('marbles left to distribute:', numMarbles);
+        endIndex = limit; // set the index equal to the last hole where a marble was added
       }
     }
+    console.log('ended at index', endIndex);
     console.log('there are', numMarbles + ' left to distribute');
-    distributeMancalaMarbles();
+    distributeMancalaMarbles(); // go on to distribute marbles to players's mancalas
   }
 
 
@@ -95,6 +101,7 @@ $(() => {
       console.log('player 1 now has', player1Marbles + ' marbles total');
       numMarbles--; //decrease the marbles to distribute
       console.log('there are', numMarbles + ' left to distribute');
+      distributeOpponentRowMarbles();
     }
     else if (numMarbles > 0 && currentPlayer === 2) { // if player 2 still has marbles to distribute
       $('#mancala-2').append($('<div>').addClass('marble')); // add a marble to their mancala
@@ -102,6 +109,7 @@ $(() => {
       console.log('player 2 now has', player2Marbles + ' marbles total');
       numMarbles--; //decrease the marbles to distribute
       console.log('there are', numMarbles + ' left to distribute');
+      distributeOpponentRowMarbles();
     }
     else {
       console.log('no more marbles');
@@ -109,7 +117,46 @@ $(() => {
   }
 
 
+  const distributeOpponentRowMarbles = () => { // function to distribute marbles along the opponent's row
+    let limit = numMarbles; // create a variable to store the for loop iteration limit
+    if (numMarbles > 0 && currentPlayer === 1) { // if player 1 still has marbles to distribute
+      if (6 < limit) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 6; // only distribute the number of marbles that match the number of holes, hold the rest
+      }
+      for (let i = 0; i < limit; i++) { // if hole is in player 2's row
+        const $marble = $('<div>').addClass('marble'); // create a marble
+        $('#row-2').children().eq(i).append($marble); //add marble to the next hole
+        player2Marbles++; // increase player 2's total marbles by 1
+        // console.log('Player 2 total marbles:', player1Marbles);
+        numMarbles--;
+        // console.log('marbles left to distribute:', numMarbles);
+        endIndex = i; // set the index equal to the last hole where a marble was added
+      }
+    }
+    else if (numMarbles > 0 && currentPlayer === 2) {
+      if (6 < limit) { // if there are less holes to distribute marbles to, than marbles themselves
+        limit = 6; // only distribute the number of marbles that match the number of holes, hold the rest
+      }
+      for (let i = 5; i > 5 - limit; i--) {
+        const $marble = $('<div>').addClass('marble'); // create a marble
+        $('#row-1').children().eq(i).append($marble); //add marble to the next hole
+        player1Marbles++; // increase player 1's total marbles by 1
+        // console.log('Player 1 total marbles:', player1Marbles);
+        numMarbles--; //decrease the marbles to distribute
+        // console.log('marbles left to distribute:', numMarbles);
+        endIndex = i; // set the index equal to the last hole where a marble was added
+      }
+    }
+    else {
+      determinePlayer();
+    }
+    console.log('index of the last hole is', endIndex);
+  }
 
+
+  const determinePlayer = () => { // function to determine which player goes next
+    console.log('to do');
+  }
 
 
 
