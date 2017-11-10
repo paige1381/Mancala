@@ -2,7 +2,12 @@ $(() => {
 
   // Setting up game logic for a single play
   const playGame = (event) => {
-    console.log($(event.currentTarget));
+    $hole = $(event.currentTarget); // create variable to store the hole that was clicked
+    // console.log($hole);
+    $numMarbles = $hole.children().length; // store the number of marbles in the selected hole
+    // console.log($numMarbles);
+    $hole.children().remove(); // remove the marbles from the selected hole
+    // console.log($hole.children().length);
   }
 
 
