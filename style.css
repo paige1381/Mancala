@@ -177,6 +177,18 @@ main > div {
   z-index: 1;
 }
 
+#winning-message {
+  font-family: "Tex Gyre Adventor", sans-serif;
+  letter-spacing: 2px;
+  font-size: 22px;
+  /*border: 1px solid black;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0;
+}
+
 footer {
   height: 50px;
   background-color: #323232;
