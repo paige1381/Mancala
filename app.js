@@ -386,17 +386,19 @@ $(() => {
     if (checkPlayer1Marbles()) {
       console.log('player2Marbles:', player2Marbles);
       $('.hole-2').children().remove();
+      $('#mancala-2').children().remove();
       for (let i = 0; i < player2Marbles; i++) {
         const $marble = $('<div>').addClass('marble'); // creating marbles
-        $('mancala-2').append($marble); // adding marbles to the mancala board
+        $('#mancala-2').append($marble); // adding marbles to the mancala board
       }
     }
     else {
-      console.log('player2Marbles:', player2Marbles);
+      console.log('player1Marbles:', player1Marbles);
       $('.hole-1').children().remove();
+      $('#mancala-1').children().remove();
       for (let i = 0; i < player1Marbles; i++) {
         const $marble = $('<div>').addClass('marble'); // creating marbles
-        $('mancala-1').append($marble); // adding marbles to the mancala board
+        $('#mancala-1').append($marble); // adding marbles to the mancala board
       }
     }
     tallyScore();
