@@ -505,7 +505,7 @@ $(() => {
       $p.text('It\'s a tie, great job!');
       // $('#winning-message').text('It\'s a tie, great job!');
     }
-    $('#modal').css('visibility', 'visible');
+    $('#winning-modal').css('visibility', 'visible');
     // $('.buttons').append($yesButton);
     // $('.buttons').append($noButton);
     $('.yes').on('click', newRound);
@@ -514,7 +514,7 @@ $(() => {
   }
 
   const newRound = (event) => {
-    $('#modal').css('visibility', 'hidden');
+    $('#winning-modal').css('visibility', 'hidden');
     $('#winner').remove();
     clearBoard();
     createBoard();
@@ -524,7 +524,7 @@ $(() => {
   }
 
   const endRound = (event) => {
-    $('#modal').css('visibility', 'hidden');
+    $('#winning-modal').css('visibility', 'hidden');
     $('#winner').remove();
     clearBoard();
     // createBoard();
@@ -576,6 +576,12 @@ $(() => {
 
 
   $('#start-over').on('click', newRound);
+  $('#instructions-button').on('click', () => {
+    $('#instructions-modal').css('visibility', 'visible');
+  });
+  $('#close-button').children().on('click', () => {
+    $('#instructions-modal').css('visibility', 'hidden');
+  });
   createBoard();
   determineFirstPlayer();
 
