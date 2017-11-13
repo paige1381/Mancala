@@ -481,7 +481,7 @@ $(() => {
     }
   }
 
-
+  $('#start-over').on('click', newRound);
   createBoard();
   determineFirstPlayer();
 
