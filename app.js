@@ -1,11 +1,13 @@
 $(() => {
 
   // Global variables =======================================
+  let totalMarbles = 24;
+
   // Player 1 total marbles
-  let player1Marbles = 6;
+  let player1Marbles = totalMarbles;
 
   // Player 2 total marbles
-  let player2Marbles = 6;
+  let player2Marbles = totalMarbles;
 
   // Tracks the current player's turn
   let currentPlayer = null;
@@ -439,8 +441,8 @@ $(() => {
     $('#winner').remove();
     clearBoard();
     createBoard();
-    player1Marbles = 6;
-    player2Marbles = 6;
+    player1Marbles = totalMarbles;
+    player2Marbles = totalMarbles;
     determineFirstPlayer();
   }
 
@@ -449,8 +451,8 @@ $(() => {
     $('#winner').remove();
     clearBoard();
     // createBoard();
-    player1Marbles = 6;
-    player2Marbles = 6;
+    player1Marbles = totalMarbles;
+    player2Marbles = totalMarbles;
   }
 
   const clearBoard = () => {
@@ -465,7 +467,7 @@ $(() => {
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
       $('#row-1').append($hole); // adding holes to the mancala board
-      for (let j = 0; j < 1; j++) {
+      for (let j = 0; j < totalMarbles/6; j++) {
         const $marble = $('<div>').addClass('marble'); // creating marbles
         $hole.append($marble); // adding marbles to the mancala board
       }
@@ -474,7 +476,7 @@ $(() => {
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-2'); // creating holes (not the mancala)
       $('#row-2').append($hole); // adding holes to the mancala board
-      for (let j = 0; j < 1; j++) {
+      for (let j = 0; j < totalMarbles/6; j++) {
         const $marble = $('<div>').addClass('marble'); // creating marbles
         $hole.append($marble); // adding marbles to the mancala board
       }
