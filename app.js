@@ -69,12 +69,12 @@ $(() => {
 
   // Functions ==============================================
 
-  const randomRotate = () => {
+  const randomRotate = () => { // used to randomly rotate marble layers
     return 'rotate(' + Math.floor(Math.random() * 360) + 'deg)';
   }
 
   const checkMarbleLayers = (i, row) => { // check for how many marble layers exist for a hole
-    const numMarbleLayers = $(row).children().eq(i).children().length;
+    const numMarbleLayers = $(row).children().eq(i).children('.marble-layer').length;
     console.log('numMarbleLayers', numMarbleLayers);
     if (numMarbleLayers === 0) {
       const $marbleLayer = $('<div>').addClass('marble-layer');
@@ -87,7 +87,7 @@ $(() => {
   }
 
   const checkLastLayer = (numMarbleLayers, i, row) => {
-    const numLastLayerMarbles = $(row).children().eq(i).children().eq(numMarbleLayers - 1).children().length;
+    const numLastLayerMarbles = $(row).children().eq(i).children('.marble-layer').eq(numMarbleLayers - 1).children().length;
     console.log('numLastLayerMarbles', numLastLayerMarbles);
     createMarbleLayers(numMarbleLayers, numLastLayerMarbles, i, row); // pass the number of marbles in the last layer to createMarbleLayers function
   }
@@ -95,7 +95,7 @@ $(() => {
   const createMarbleLayers = (numMarbleLayers, numLastLayerMarbles, i, row) => {
     const $marble = $('<div>').addClass('marble').css('background', 'blue'); // create a marble
     if (numLastLayerMarbles < 5) { // check if the last marble layer has less than 5 marbles
-      $(row).children().eq(i).children().eq(numMarbleLayers - 1).append($marble); //add marble to that marble layer
+      $(row).children().eq(i).children('.marble-layer').eq(numMarbleLayers - 1).append($marble); //add marble to that marble layer
       console.log('marble appended');
     }
     else {
@@ -103,6 +103,7 @@ $(() => {
       $(row).children().eq(i).append($marbleLayer) // add this to the hole
       $marbleLayer.append($marble); //add marble to the new marble layer
     }
+
   }
 
 
@@ -518,6 +519,7 @@ $(() => {
     // player 1
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
+      const $hoverNumber = $('<div>').addClass('hover-number');
       $('#row-1').append($hole); // adding holes to the mancala board
       const $marbleLayer = $('<div>').addClass('marble-layer');
       $hole.append($marbleLayer); // adding marble layer to holes
@@ -525,10 +527,14 @@ $(() => {
         const $marble = $('<div>').addClass('marble'); // creating marbles
         $marbleLayer.append($marble); // adding marbles to the marble layer
       }
+      $hoverNumber.text($hole.children().children().length);
+      $hole.append($hoverNumber);
+      $hoverNumber.hover(mouseEnter, mouseLeave);
     }
     // player 2
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-2'); // creating holes (not the mancala)
+      const $hoverNumber = $('<div>').addClass('hover-number');
       $('#row-2').append($hole); // adding holes to the mancala board
       const $marbleLayer = $('<div>').addClass('marble-layer');
       $hole.append($marbleLayer); // adding marble layer to holes
@@ -536,8 +542,20 @@ $(() => {
         const $marble = $('<div>').addClass('marble'); // creating marbles
         $marbleLayer.append($marble); // adding marbles to the marble layer
       }
+      $hoverNumber.text($hole.children().children().length);
+      $hole.append($hoverNumber);
+      $hoverNumber.hover(mouseEnter, mouseLeave);
     }
   }
+
+  const mouseEnter = (event) => {
+    $(event.currentTarget).children('.hover-number').css('visibility', 'visible')
+  }
+
+  const mouseLeave = (event) => {
+    $(event.currentTarget).children('.hover-number').css('visibility', 'hidden')
+  }
+
 
   $('#start-over').on('click', newRound);
   createBoard();
