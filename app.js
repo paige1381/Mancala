@@ -24,6 +24,15 @@ $(() => {
   // Tracks the row of th hole where the last marble was added
   let endRow = null;
 
+  // Pre-canned marble colors
+  const marbleColors = [
+    ['#e54ed0, #ff72ff'],
+    ['#b106df, #06dfb1'],
+    ['#1e48e2, #060e2d'],
+    ['#42e100, #f6ff6a'],
+    ['#fab340, #fe8787'],
+    ['#b400a2, #9e0031']
+  ]
 
 
 
@@ -33,8 +42,8 @@ $(() => {
   const setVariables = (event) => {
     console.log('=== setVariables  ===');
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
-    // console.log('current hole:', $hole);
-    // numMarbles = $hole.children().length; // store the number of marbles in the selected hole
+    // console.log($hole.children('.hover-number'));
+    $hole.hover(mouseEnter, mouseLeave);
     numMarbles = $hole.children().children().length; // store the number of marbles in the selected hole
     console.log('numMarbles:', numMarbles);
     startIndex = $hole.index(); // set the index equal to the location of the selected hole
@@ -55,16 +64,20 @@ $(() => {
   const removeMarbles = (event) => {
     console.log('removeMarbles');
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
-    $hole.children().remove(); // remove the marbles from the selected hole
+    $hole.children('.marble-layer').remove(); // remove the marbles from the selected hole
     // console.log('the hole now has', $hole.children().length + ' marbles');
     // console.log('currentPlayer:', currentPlayer);
     distributeInitialPlayerRowMarbles(); // go on to distribute the marbles from the selected hole
   }
 
-  // const showTooltip = (event) => {
-  //   const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
-  //
-  // }
+  const mouseEnter = (event) => {
+    const hoverNumber = $(event.currentTarget).children('.marble-layer').children().length;
+    $(event.currentTarget).children('.hover-number').css('visibility', 'visible').text(hoverNumber);
+  }
+
+  const mouseLeave = (event) => {
+    $(event.currentTarget).children('.hover-number').css('visibility', 'hidden')
+  }
 
 
   // Functions ==============================================
@@ -72,6 +85,14 @@ $(() => {
   const randomRotate = () => { // used to randomly rotate marble layers
     return 'rotate(' + Math.floor(Math.random() * 360) + 'deg)';
   }
+
+
+  const randomMarbleColor = (arr) => {
+    const random = Math.floor(Math.random() * 6)
+    console.log(random);
+    return 'radial-gradient(' + arr[random] + ')';
+  }
+
 
   const checkMarbleLayers = (i, row) => { // check for how many marble layers exist for a hole
     const numMarbleLayers = $(row).children().eq(i).children('.marble-layer').length;
@@ -86,14 +107,16 @@ $(() => {
     }
   }
 
+
   const checkLastLayer = (numMarbleLayers, i, row) => {
     const numLastLayerMarbles = $(row).children().eq(i).children('.marble-layer').eq(numMarbleLayers - 1).children().length;
     console.log('numLastLayerMarbles', numLastLayerMarbles);
     createMarbleLayers(numMarbleLayers, numLastLayerMarbles, i, row); // pass the number of marbles in the last layer to createMarbleLayers function
   }
 
+
   const createMarbleLayers = (numMarbleLayers, numLastLayerMarbles, i, row) => {
-    const $marble = $('<div>').addClass('marble').css('background', 'blue'); // create a marble
+    const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
     if (numLastLayerMarbles < 5) { // check if the last marble layer has less than 5 marbles
       $(row).children().eq(i).children('.marble-layer').eq(numMarbleLayers - 1).append($marble); //add marble to that marble layer
       console.log('marble appended');
@@ -103,7 +126,6 @@ $(() => {
       $(row).children().eq(i).append($marbleLayer) // add this to the hole
       $marbleLayer.append($marble); //add marble to the new marble layer
     }
-
   }
 
 
@@ -162,7 +184,8 @@ $(() => {
     console.log('numMarbles:', numMarbles);
     if (numMarbles > 0 && currentPlayer === 1) { // if player 1 still has marbles to distribute
       endRow = 1; // the endIndex will be in player 1's mancala
-      $('#mancala-1').append($('<div>').addClass('marble')); // add a marble to their mancala
+      const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
+      $('#mancala-1').append($marble); // add a marble to their mancala
       player1Marbles++; // increase player 1's total marbles by 1
       numMarbles--; // decrease the marbles to distribute
       endIndex = null; // set this to null because the mancalas don't need indexes
@@ -174,7 +197,8 @@ $(() => {
     }
     else if (numMarbles > 0 && currentPlayer === 2) { // if player 2 still has marbles to distribute
       endRow = 2; // the endIndex will be in player 2's mancala
-      $('#mancala-2').append($('<div>').addClass('marble')); // add a marble to their mancala
+      const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
+      $('#mancala-2').append($marble); // add a marble to their mancala
       player2Marbles++; // increase player 2's total marbles by 1
       numMarbles--; //decrease the marbles to distribute
       endIndex = null; // set this to null because the mancalas don't need indexes
@@ -524,12 +548,12 @@ $(() => {
       const $marbleLayer = $('<div>').addClass('marble-layer');
       $hole.append($marbleLayer); // adding marble layer to holes
       for (let j = 0; j < totalMarbles/6; j++) {
-        const $marble = $('<div>').addClass('marble'); // creating marbles
+        const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // creating marbles
         $marbleLayer.append($marble); // adding marbles to the marble layer
       }
-      $hoverNumber.text($hole.children().children().length);
+      $hoverNumber.text($hole.children('.marble-layer').children().length);
       $hole.append($hoverNumber);
-      $hoverNumber.hover(mouseEnter, mouseLeave);
+      // $hole.hover(mouseEnter, mouseLeave);
     }
     // player 2
     for (let i = 0; i < 6; i++) {
@@ -539,22 +563,16 @@ $(() => {
       const $marbleLayer = $('<div>').addClass('marble-layer');
       $hole.append($marbleLayer); // adding marble layer to holes
       for (let j = 0; j < totalMarbles/6; j++) {
-        const $marble = $('<div>').addClass('marble'); // creating marbles
+        const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // creating marbles
         $marbleLayer.append($marble); // adding marbles to the marble layer
       }
-      $hoverNumber.text($hole.children().children().length);
+      $hoverNumber.text($hole.children('.marble-layer').children().length);
       $hole.append($hoverNumber);
-      $hoverNumber.hover(mouseEnter, mouseLeave);
+      // $hole.hover(mouseEnter, mouseLeave);
     }
   }
 
-  const mouseEnter = (event) => {
-    $(event.currentTarget).children('.hover-number').css('visibility', 'visible')
-  }
 
-  const mouseLeave = (event) => {
-    $(event.currentTarget).children('.hover-number').css('visibility', 'hidden')
-  }
 
 
   $('#start-over').on('click', newRound);

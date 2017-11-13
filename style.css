@@ -167,7 +167,7 @@ main > div {
 }
 
 .marble-layer {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
 	width: 100%;
 	height: 100%;
   display: flex;
@@ -191,11 +191,11 @@ main > div {
   width: 30px;
   height: 30px;
   /*background-color: pink;*/
-  background: pink; /* For browsers that do not support gradients */
-  background: -webkit-radial-gradient(#ace5db, #ffc0eb); /* Safari 5.1 to 6.0 */
-  background: -o-radial-gradient(#ace5db, #ffc0eb); /* For Opera 11.6 to 12.0 */
-  background: -moz-radial-gradient(#ace5db, #ffc0eb); /* For Firefox 3.6 to 15 */
-  background: radial-gradient(#ace5db, #ffc0eb); /* Standard syntax */
+  background-color: pink;
+  /*background: -webkit-radial-gradient(#ace5db, #ffc0eb);
+  background: -o-radial-gradient(#ace5db, #ffc0eb);
+  background: -moz-radial-gradient(#ace5db, #ffc0eb);*/
+  background: radial-gradient(#b400a2, #9e0031);
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
   /*z-index: 1;*/
 }
@@ -210,7 +210,6 @@ main > div {
   bottom: 0;
   right: 0;
   color: white;
-  border: 1px solid gold;
   display: flex;
   justify-content: center;
   align-items: center;
