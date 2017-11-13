@@ -327,7 +327,7 @@ $(() => {
   const enablePlayer1 = () => {
     console.log('enablePlayer1');
     // $('#player-1').css('border', '1px solid black');
-    // $('#player-1').css('font-weight', 'bold');
+    $('#player-1').css('color', 'black');
     $('.hole-1').on('click', setVariables); // adding an event listner to all the holes
   }
 
@@ -335,7 +335,7 @@ $(() => {
   const enablePlayer2 = () => {
     console.log('enablePlayer2');
     // $('#player-2').css('border', '1px solid black');
-    // $('#player-1').css('font-weight', 'bold');
+    $('#player-2').css('color', 'black');
     $('.hole-2').on('click', setVariables); // adding an event listner to all the holes
   }
 
@@ -383,74 +383,106 @@ $(() => {
 
   const determineWinner = () => {
     console.log('=== determineWinner ===');
-    if (checkPlayer1Marbles()) {
-      console.log('player2Marbles:', player2Marbles);
-      $('.hole-2').children().remove();
-      $('#mancala-2').children().remove();
-      for (let i = 0; i < player2Marbles; i++) {
-        const $marble = $('<div>').addClass('marble'); // creating marbles
-        $('#mancala-2').append($marble); // adding marbles to the mancala board
-      }
-    }
-    else {
-      console.log('player1Marbles:', player1Marbles);
-      $('.hole-1').children().remove();
-      $('#mancala-1').children().remove();
-      for (let i = 0; i < player1Marbles; i++) {
-        const $marble = $('<div>').addClass('marble'); // creating marbles
-        $('#mancala-1').append($marble); // adding marbles to the mancala board
-      }
-    }
+    // if (checkPlayer1Marbles()) {
+    //   console.log('player2Marbles:', player2Marbles);
+    //   $('.hole-2').children().remove();
+    //   $('#mancala-2').children().remove();
+    //   for (let i = 0; i < player2Marbles; i++) {
+    //     const $marble = $('<div>').addClass('marble'); // creating marbles
+    //     $('#mancala-2').append($marble); // adding marbles to the mancala board
+    //   }
+    // }
+    // else {
+    //   console.log('player1Marbles:', player1Marbles);
+    //   $('.hole-1').children().remove();
+    //   $('#mancala-1').children().remove();
+    //   for (let i = 0; i < player1Marbles; i++) {
+    //     const $marble = $('<div>').addClass('marble'); // creating marbles
+    //     $('#mancala-1').append($marble); // adding marbles to the mancala board
+    //   }
+    // }
     tallyScore();
   }
 
 
+  // used same function set up seen here: https://raventools.com/blog/create-a-modal-dialog-using-css-and-javascript/
   const tallyScore = () => {
     console.log('=== tallyScore ===');
-    const $winningMessage = $('<div>').attr('id', 'winning-message');
+    disablePlayer1();
+    disablePlayer2();
+    const $p = $('<p>').attr('id', 'winner');
+    $('#winning-message').prepend($p);
+    // const $yesButton = $('<button>').addClass('button').text('Yes');
+    // const $noButton = $('<button>').addClass('button').text('No');
     if (player1Marbles > player2Marbles) {
-      $winningMessage.text('Player 1 is the winner!');
-      $('main').prepend($winningMessage);
+      $p.text('Player 1 is the winner!');
+      // $('#winning-message').text('Player 1 is the winner!');
     }
     else if (player1Marbles < player2Marbles) {
-      $winningMessage.text('Player 2 is the winner!');
-      $('main').prepend($winningMessage);
+      $p.text('Player 2 is the winner!');
+      // $('#winning-message').text('Player 2 is the winner!');
     }
-    else {'It\'s a tie, great job!'
-    $winningMessage.text('It\'s a tie, great job!');
-    $('main').prepend($winningMessage);
+    else {
+      $p.text('It\'s a tie, great job!');
+      // $('#winning-message').text('It\'s a tie, great job!');
     }
+    $('#modal').css('visibility', 'visible');
+    // $('.buttons').append($yesButton);
+    // $('.buttons').append($noButton);
+    $('.yes').on('click', newRound);
+    $('.no').on('click', endRound);
     // clearBoard();
   }
 
+  const newRound = (event) => {
+    $('#modal').css('visibility', 'hidden');
+    $('#winner').remove();
+    clearBoard();
+    createBoard();
+    player1Marbles = 6;
+    player2Marbles = 6;
+    determineFirstPlayer();
+  }
+
+  const endRound = (event) => {
+    $('#modal').css('visibility', 'hidden');
+    $('#winner').remove();
+    clearBoard();
+    // createBoard();
+    player1Marbles = 6;
+    player2Marbles = 6;
+  }
 
   const clearBoard = () => {
     console.log('=== clearBoard ===');
     $('.marble').remove();
   }
 
-
-  // Creating initial mancala board setup
-  // player 1
-  for (let i = 0; i < 6; i++) {
-    const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
-    $('#row-1').append($hole); // adding holes to the mancala board
-    for (let j = 0; j < 1; j++) {
-      const $marble = $('<div>').addClass('marble'); // creating marbles
-      $hole.append($marble); // adding marbles to the mancala board
+  const createBoard = () => { // Creating initial mancala board setup
+    $('#row-1').empty();
+    $('#row-2').empty();
+    // player 1
+    for (let i = 0; i < 6; i++) {
+      const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
+      $('#row-1').append($hole); // adding holes to the mancala board
+      for (let j = 0; j < 1; j++) {
+        const $marble = $('<div>').addClass('marble'); // creating marbles
+        $hole.append($marble); // adding marbles to the mancala board
+      }
+    }
+    // player 2
+    for (let i = 0; i < 6; i++) {
+      const $hole = $('<div>').addClass('hole-2'); // creating holes (not the mancala)
+      $('#row-2').append($hole); // adding holes to the mancala board
+      for (let j = 0; j < 1; j++) {
+        const $marble = $('<div>').addClass('marble'); // creating marbles
+        $hole.append($marble); // adding marbles to the mancala board
+      }
     }
   }
 
-  // player 2
-  for (let i = 0; i < 6; i++) {
-    const $hole = $('<div>').addClass('hole-2'); // creating holes (not the mancala)
-    $('#row-2').append($hole); // adding holes to the mancala board
-    for (let j = 0; j < 1; j++) {
-      const $marble = $('<div>').addClass('marble'); // creating marbles
-      $hole.append($marble); // adding marbles to the mancala board
-    }
-  }
 
+  createBoard();
   determineFirstPlayer();
 
 
