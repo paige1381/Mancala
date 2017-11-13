@@ -51,7 +51,6 @@ $(() => {
     removeMarbles(event);
   }
 
-
   const removeMarbles = (event) => {
     console.log('removeMarbles');
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
@@ -61,8 +60,22 @@ $(() => {
     distributeInitialPlayerRowMarbles(); // go on to distribute the marbles from the selected hole
   }
 
+  // const showTooltip = (event) => {
+  //   const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
+  //
+  // }
+
 
   // Functions ==============================================
+  const createMarbleLayers = () => {
+
+  }
+
+
+
+
+
+
   const distributeInitialPlayerRowMarbles = () => { // function to distribute marbles along the player's row based on hole selected
     console.log('=== distributeInitialPlayerRowMarbles ===');
     console.log('numMarbles:', numMarbles);
@@ -467,18 +480,22 @@ $(() => {
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
       $('#row-1').append($hole); // adding holes to the mancala board
+      const $marbleLayer = $('<div>').addClass('marble-layer');
+      $hole.append($marbleLayer); // adding marble layer to holes
       for (let j = 0; j < totalMarbles/6; j++) {
         const $marble = $('<div>').addClass('marble'); // creating marbles
-        $hole.append($marble); // adding marbles to the mancala board
+        $marbleLayer.append($marble); // adding marbles to the marble layer
       }
     }
     // player 2
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-2'); // creating holes (not the mancala)
       $('#row-2').append($hole); // adding holes to the mancala board
+      const $marbleLayer = $('<div>').addClass('marble-layer');
+      $hole.append($marbleLayer); // adding marble layer to holes
       for (let j = 0; j < totalMarbles/6; j++) {
         const $marble = $('<div>').addClass('marble'); // creating marbles
-        $hole.append($marble); // adding marbles to the mancala board
+        $marbleLayer.append($marble); // adding marbles to the marble layer
       }
     }
   }
