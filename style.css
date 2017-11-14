@@ -118,7 +118,6 @@ main > div {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  /*background-color: #D2B48C;*/
 }
 
 #row-2 {
@@ -128,7 +127,6 @@ main > div {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  /*background-color: #937D62*/
 }
 
 #mancala-1, #mancala-2 {
@@ -152,22 +150,15 @@ main > div {
   border-radius: 50%;
 	width: 115px;
 	height: 115px;
-  /*display: inline;*/
   position: relative;
   margin: 10px;
   box-sizing: border-box;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/wood_board.png");
-  /*cursor: pointer;*/
   padding: 15px;
-  /*justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  flex-direction: row;*/
   z-index: 1;
 }
 
 .marble-layer {
-  /*border: 1px solid black;*/
 	width: 100%;
 	height: 100%;
   display: flex;
@@ -190,17 +181,14 @@ main > div {
   border-radius: 50%;
   width: 30px;
   height: 30px;
-  /*background-color: pink;*/
   background-color: pink;
-  /*background: -webkit-radial-gradient(#ace5db, #ffc0eb);
-  background: -o-radial-gradient(#ace5db, #ffc0eb);
-  background: -moz-radial-gradient(#ace5db, #ffc0eb);*/
   background: radial-gradient(#b400a2, #9e0031);
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
-  /*z-index: 1;*/
 }
 
 .hover-number {
+  /*border: 1px solid black;
+  background-color: lightblue;*/
   z-index: 3;
   visibility: hidden;
   text-align:center;
