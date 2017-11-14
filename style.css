@@ -210,6 +210,19 @@ main > div {
   cursor: pointer;
 }
 
+.player-number {
+  position: absolute;
+  visibility: hidden;
+  animation-name: player-appear;
+  animation-duration: 4s;
+}
+
+@keyframes player-appear {
+  0% {visibility: visible;}
+  30% {transform: scale(2); opacity: 1;}
+  100% {opacity: 0;}
+}
+
 /*used same rules laid out here: https://raventools.com/blog/create-a-modal-dialog-using-css-and-javascript/*/
 #winning-message {
   width:300px;
