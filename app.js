@@ -35,11 +35,8 @@ $(() => {
   ]
 
 
-
-
   // Event handlers =========================================
-  // Setting up game logic for a single play
-  const setVariables = (event) => {
+  const setVariables = (event) => { // Setting up game logic for a single play
     console.log('=== setVariables  ===');
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
     numMarbles = $hole.children().children().length; // store the number of marbles in the selected hole
@@ -66,13 +63,22 @@ $(() => {
     distributeInitialPlayerRowMarbles(); // go on to distribute the marbles from the selected hole
   }
 
-  const mouseEnter = (event) => {
+  const mouseEnterHole = (event) => {
     const hoverNumber = $(event.currentTarget).children('.marble-layer').children().length;
     $(event.currentTarget).children('.hover-number').css('visibility', 'visible').text(hoverNumber);
   }
 
-  const mouseLeave = (event) => {
+  const mouseLeaveHole = (event) => {
     $(event.currentTarget).children('.hover-number').css('visibility', 'hidden')
+  }
+
+  const mouseEnterMancala = (event) => {
+    const hoverNumber = $(event.currentTarget).children('.mancala-layer').children().length;
+    $(event.currentTarget).children('.mancala-number').css('visibility', 'visible').text(hoverNumber);
+  }
+
+  const mouseLeaveMancala = (event) => {
+    $(event.currentTarget).children('.mancala-number').css('visibility', 'hidden')
   }
 
 
@@ -526,6 +532,11 @@ $(() => {
     $('#row-1').empty();
     $('#row-2').empty();
     // player 1
+    const $hoverNumberMancala1 = $('<div>').addClass('mancala-number');
+    $hoverNumberMancala1.text($('#mancala-1').children('.mancala-layer').children().length);
+    $('#mancala-1').append($hoverNumberMancala1);
+    $('#mancala-1').hover(mouseEnterMancala, mouseLeaveMancala);
+
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-1'); // creating holes (not the mancala)
       const $hoverNumber = $('<div>').addClass('hover-number');
@@ -538,9 +549,14 @@ $(() => {
       }
       $hoverNumber.text($hole.children('.marble-layer').children().length);
       $hole.append($hoverNumber);
-      $hole.hover(mouseEnter, mouseLeave);
+      $hole.hover(mouseEnterHole, mouseLeaveHole);
     }
     // player 2
+    const $hoverNumberMancala2 = $('<div>').addClass('mancala-number');
+    $hoverNumberMancala2.text($('#mancala-2').children('.mancala-layer').children().length);
+    $('#mancala-2').append($hoverNumberMancala2);
+    $('#mancala-2').hover(mouseEnterMancala, mouseLeaveMancala);
+
     for (let i = 0; i < 6; i++) {
       const $hole = $('<div>').addClass('hole-2'); // creating holes (not the mancala)
       const $hoverNumber = $('<div>').addClass('hover-number');
@@ -553,7 +569,7 @@ $(() => {
       }
       $hoverNumber.text($hole.children('.marble-layer').children().length);
       $hole.append($hoverNumber);
-      $hole.hover(mouseEnter, mouseLeave);
+      $hole.hover(mouseEnterHole, mouseLeaveHole);
     }
   }
 
