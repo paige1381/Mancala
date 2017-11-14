@@ -89,7 +89,7 @@ $(() => {
 
   const randomMarbleColor = (arr) => {
     const random = Math.floor(Math.random() * 6)
-    console.log(random);
+    // console.log(random);
     return 'radial-gradient(' + arr[random] + ')';
   }
 
@@ -440,7 +440,7 @@ $(() => {
     console.log('=== checkPlayer1Marbles ===');
     for (let i = 0; i < $('.hole-1').length; i++) {
       // console.log($('.hole-1').length);
-      if ($('.hole-1').eq(i).children().length > 0) { // stop the function once a hole is found not empty
+      if ($('.hole-1').eq(i).children('.marble-layer').length > 0) { // stop the function once a hole is found not empty
         return false;
       }
     }
@@ -452,7 +452,7 @@ $(() => {
     console.log('=== checkPlayer2Marbles ===');
     for (let i = 0; i < $('.hole-2').length; i++) {
       // console.log($('.hole-1').length);
-      if ($('.hole-2').eq(i).children().length > 0) { // stop the function once a hole is found not empty
+      if ($('.hole-2').eq(i).children('.marble-layer').length > 0) { // stop the function once a hole is found not empty
         return false;
       }
     }
@@ -573,7 +573,7 @@ $(() => {
   }
 
 
-
+  // Event listeners
 
   $('#start-over').on('click', newRound);
   $('#instructions-button').on('click', () => {
@@ -582,6 +582,10 @@ $(() => {
   $('#close-button').children().on('click', () => {
     $('#instructions-modal').css('visibility', 'hidden');
   });
+
+
+  // Invoking Functions
+
   createBoard();
   determineFirstPlayer();
 
