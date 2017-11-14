@@ -118,8 +118,43 @@ $(() => {
     }
     else {
       const $marbleLayer = $('<div>').addClass('marble-layer').css('transform', randomRotate()); // create a new marble layer
-      $(row).children().eq(i).append($marbleLayer) // add this to the hole
+      $(row).children().eq(i).append($marbleLayer); // add this to the hole
       $marbleLayer.append($marble); //add marble to the new marble layer
+    }
+  }
+
+
+  const checkMancalaLayers = (mancala) => {
+    const numMancalaLayers = $(mancala).children('.mancala-layer').length;
+    console.log('numMancalaLayers', numMancalaLayers);
+    if (numMancalaLayers === 0) {
+      const $mancalaLayer = $('<div>').addClass('mancala-layer');
+      $(mancala).append($mancalaLayer);
+      checkMancalaLayers(mancala);
+    }
+    else {
+      checkLastMancalaLayer(numMancalaLayers, mancala); // pass the number of layers to checkLastMancalaLayer function
+    }
+  }
+
+
+  const checkLastMancalaLayer = (numMancalaLayers, mancala) => {
+    const numLastLayerMancala = $(mancala).children('.mancala-layer').eq(numMancalaLayers - 1).children().length;
+    console.log('numLastLayerMancala', numLastLayerMancala);
+    createMancalaLayers(numMancalaLayers, numLastLayerMancala, mancala); // pass the number of marbles in the last layer to createMarbleLayers function
+  }
+
+
+  const createMancalaLayers = (numMancalaLayers, numLastLayerMancala, mancala) => {
+    const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
+    if (numLastLayerMancala < 18) { // check if the last marble layer has less than 5 marbles
+      $(mancala).children('.mancala-layer').eq(numMancalaLayers - 1).append($marble); //add marble to that marble layer
+      console.log('marble appended');
+    }
+    else {
+      const $mancalaLayer = $('<div>').addClass('mancala-layer').css('transform', 'rotate(15deg)'); // create a new marble layer
+      $(mancala).append($mancalaLayer); // add this to the hole
+      $mancalaLayer.append($marble); //add marble to the new marble layer
     }
   }
 
@@ -171,8 +206,9 @@ $(() => {
     console.log('numMarbles:', numMarbles);
     if (numMarbles > 0 && currentPlayer === 1) { // if player 1 still has marbles to distribute
       endRow = 1; // the endIndex will be in player 1's mancala
-      const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
-      $('#mancala-1').append($marble); // add a marble to their mancala
+      checkMancalaLayers('#mancala-1');
+      // const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
+      // $('#mancala-1').append($marble); // add a marble to their mancala
       player1Marbles++; // increase player 1's total marbles by 1
       numMarbles--; // decrease the marbles to distribute
       endIndex = null; // set this to null because the mancalas don't need indexes
@@ -184,8 +220,9 @@ $(() => {
     }
     else if (numMarbles > 0 && currentPlayer === 2) { // if player 2 still has marbles to distribute
       endRow = 2; // the endIndex will be in player 2's mancala
-      const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
-      $('#mancala-2').append($marble); // add a marble to their mancala
+      checkMancalaLayers('#mancala-2');
+      // const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
+      // $('#mancala-2').append($marble); // add a marble to their mancala
       player2Marbles++; // increase player 2's total marbles by 1
       numMarbles--; //decrease the marbles to distribute
       endIndex = null; // set this to null because the mancalas don't need indexes
@@ -216,8 +253,6 @@ $(() => {
       }
       for (let i = 0; i < limit; i++) { // if hole is in player 2's row
         checkMarbleLayers(i, '#row-2');
-        // const $marble = $('<div>').addClass('marble'); // create a marble
-        // $('#row-').children().eq(i).append($marble); //add marble to the next hole
         player2Marbles++; // increase player 2's total marbles by 1
         numMarbles--;
         console.log('numMarbles:', numMarbles);
@@ -237,8 +272,6 @@ $(() => {
       }
       for (let i = 5; i >= limit; i--) {
         checkMarbleLayers(i, '#row-1');
-        // const $marble = $('<div>').addClass('marble'); // create a marble
-        // $('#row-1').children().eq(i).append($marble); //add marble to the next hole
         player1Marbles++; // increase player 1's total marbles by 1
         numMarbles--; //decrease the marbles to distribute
         console.log('numMarbles:', numMarbles);
@@ -251,10 +284,6 @@ $(() => {
     else { // there are no more marbles left to distribute
       determineNextPlayer(); // go on to determine what player should go next
     }
-    // console.log('ended at index', endIndex);
-    // console.log('there are', numMarbles + ' left to distribute');
-    // console.log('player 1 total:', player1Marbles);
-    // console.log('player 2 total:', player2Marbles);
   }
 
 
@@ -299,10 +328,6 @@ $(() => {
       }
     }
     distributeMancalaMarbles(); // go on to distribute marbles to players's mancalas
-    // console.log('ended at index', endIndex);
-    // console.log('there are', numMarbles + ' left to distribute');
-    // console.log('player 1 total:', player1Marbles);
-    // console.log('player 2 total:', player2Marbles);
   }
 
 
@@ -312,7 +337,6 @@ $(() => {
     console.log('player1Marbles:', player1Marbles);
     console.log('player2Marbles:', player2Marbles);
     if (currentPlayer === 1 && endRow === 1) { // if player 1's last marble is added to their row
-      console.log($('.hole-1').eq(endIndex).children().children().length);
       if ($('.hole-1').eq(endIndex).children('.marble-layer').children().length === 1 && endIndex !== null) { // if the marble layers of the hole that the last marble was added to are empty and it's not the mancala
         for (let i = 0; i < $('.hole-2').eq(endIndex).children('.marble-layer').children().length; i++) {
           checkMarbleLayers(endIndex, '#row-1');
