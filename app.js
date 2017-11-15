@@ -169,6 +169,7 @@ $(() => {
 
   const createMancalaLayers = (numMancalaLayers, numLastLayerMancala, mancala) => {
     const $marble = $('<div>').addClass('marble').css('background', randomMarbleColor(marbleColors)); // create a marble
+    console.log(numLastLayerMancala);
     if (numLastLayerMancala < 18) { // check if the last marble layer has less than 5 marbles
       $(mancala).children('.mancala-layer').eq(numMancalaLayers - 1).append($marble); //add marble to that marble layer
       console.log('marble appended');
