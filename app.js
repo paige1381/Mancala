@@ -553,7 +553,9 @@ $(() => {
     console.log('=== clearBoard ===');
     $('.marble-layer').remove();
     $('.mancala-layer').remove();
+    console.log('removed mancala-layer');
     $('.mancala-number').remove();
+    console.log('removed mancala-number');
   }
 
   const createBoard = () => { // Creating initial mancala board setup
