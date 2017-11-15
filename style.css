@@ -3,6 +3,11 @@
   src: url("tex-gyre-adventor/texgyreadventor-regular.otf");
 }
 
+@font-face {
+  font-family: "Tex Gyre Adventor Bold";
+  src: url("tex-gyre-adventor/texgyreadventor-bold.otf");
+}
+
 #wrapper {
   width: 95%;
   margin: 40px auto;
@@ -247,6 +252,10 @@ main > div {
   letter-spacing: 1px;
   display: flex;
   flex-direction: column;
+}
+
+span {
+  font-family: "Tex Gyre Adventor Bold", sans-serif;
 }
 
 footer {
