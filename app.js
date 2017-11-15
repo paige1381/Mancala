@@ -1,6 +1,10 @@
 $(() => {
 
+
+
   // Global variables =======================================
+
+
   let totalMarbles = 24;
 
   // Player 1 total marbles
@@ -35,7 +39,9 @@ $(() => {
   ]
 
 
+
   // Event handlers =========================================
+
   const setVariables = (event) => { // Setting up game logic for a single play
     console.log('=== setVariables  ===');
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
@@ -56,6 +62,7 @@ $(() => {
     removeMarbles(event);
   }
 
+
   const removeMarbles = (event) => {
     console.log('removeMarbles');
     const $hole = $(event.currentTarget); // create variable to store the hole that was clicked
@@ -63,23 +70,29 @@ $(() => {
     distributeInitialPlayerRowMarbles(); // go on to distribute the marbles from the selected hole
   }
 
+
+  // === Hole/mancala hover behavior ========================
   const mouseEnterHole = (event) => {
     const hoverNumber = $(event.currentTarget).children('.marble-layer').children().length;
     $(event.currentTarget).children('.hover-number').css('visibility', 'visible').text(hoverNumber);
   }
 
+
   const mouseLeaveHole = (event) => {
     $(event.currentTarget).children('.hover-number').css('visibility', 'hidden')
   }
+
 
   const mouseEnterMancala = (event) => {
     const hoverNumber = $(event.currentTarget).children('.mancala-layer').children().length;
     $(event.currentTarget).children('.mancala-number').css('visibility', 'visible').text(hoverNumber);
   }
 
+
   const mouseLeaveMancala = (event) => {
     $(event.currentTarget).children('.mancala-number').css('visibility', 'hidden')
   }
+
 
 
   // Functions ==============================================
@@ -94,6 +107,8 @@ $(() => {
     return 'radial-gradient(' + arr[random] + ')';
   }
 
+
+  // === Creating marble layers =============================
 
   const checkMarbleLayers = (i, row) => { // check for how many marble layers exist for a hole
     const numMarbleLayers = $(row).children().eq(i).children('.marble-layer').length;
@@ -130,6 +145,7 @@ $(() => {
   }
 
 
+  // === Creating mancala marble layers =====================
   const checkMancalaLayers = (mancala) => {
     const numMancalaLayers = $(mancala).children('.mancala-layer').length;
     console.log('numMancalaLayers', numMancalaLayers);
@@ -165,6 +181,7 @@ $(() => {
   }
 
 
+  // === Moving marbles =====================================
   const distributeInitialPlayerRowMarbles = () => { // function to distribute marbles along the player's row based on hole selected
     console.log('=== distributeInitialPlayerRowMarbles ===');
     console.log('numMarbles:', numMarbles);
@@ -382,6 +399,7 @@ $(() => {
     }
 
 
+ // === Disabling players =====================================
   const disablePlayer1 = () => {
     console.log('disablePlayer1');
     // $('#player-1').css('border', 'none');
@@ -404,6 +422,7 @@ $(() => {
   }
 
 
+  // === Enabling players =====================================
   const enablePlayer1 = () => {
     console.log('enablePlayer1');
     // $('#player-1').css('border', '1px solid black');
@@ -420,6 +439,7 @@ $(() => {
   }
 
 
+  // === Picking first player ==================================
   const determineFirstPlayer = () => {
     currentPlayer = 1;
     enablePlayer1();
@@ -427,6 +447,7 @@ $(() => {
   }
 
 
+  // === Checking if game is over ==============================
   const determineRoundOver = () => {
     console.log('=== determineRoundOver ===');
     console.log('player 1 empty?', checkPlayer1Marbles());
@@ -460,6 +481,7 @@ $(() => {
   }
 
 
+  // === Determining the winner ================================
   const determineWinner = () => {
     console.log('=== determineWinner ===');
     // if (checkPlayer1Marbles()) {
@@ -483,7 +505,6 @@ $(() => {
     tallyScore();
   }
 
-
   // used same function set up seen here: https://raventools.com/blog/create-a-modal-dialog-using-css-and-javascript/
   const tallyScore = () => {
     console.log('=== tallyScore ===');
@@ -505,6 +526,8 @@ $(() => {
     $('.no').on('click', endRound);
   }
 
+
+  // === Winning modal window button functions =================
   const newRound = (event) => {
     $('#winning-modal').css('visibility', 'hidden');
     $('#winner').remove();
@@ -523,14 +546,19 @@ $(() => {
     player2Marbles = totalMarbles;
   }
 
+
+  // === Clear/create board ====================================
   const clearBoard = () => {
     console.log('=== clearBoard ===');
-    $('.marble').remove();
+    $('.marble-layer').remove();
+    $('.mancala-layer').remove();
+    $('.mancala-number').remove();
   }
 
   const createBoard = () => { // Creating initial mancala board setup
     $('#row-1').empty();
     $('#row-2').empty();
+
     // player 1
     const $hoverNumberMancala1 = $('<div>').addClass('mancala-number');
     $hoverNumberMancala1.text($('#mancala-1').children('.mancala-layer').children().length);
@@ -574,24 +602,23 @@ $(() => {
   }
 
 
-  // Event listeners ========================================
 
-  $('#start-over').on('click', newRound);
-  $('#instructions-button').on('click', () => {
+  // Event listeners ===========================================
+
+  $('#start-over').on('click', newRound); // begin a new round when the "Start Over" button is clicked
+  $('#instructions-button').on('click', () => { // open up the "How to Play" modal window when that button is clicked
     $('#instructions-modal').css('visibility', 'visible');
   });
-  $('#close-button').children().on('click', () => {
+  $('#close-button').children().on('click', () => { // close the "How to Play" modal window when the "Close" button is clicked
     $('#instructions-modal').css('visibility', 'hidden');
   });
 
 
-  // Function invocations ===================================
 
-  createBoard();
-  determineFirstPlayer();
+  // Function invocations ======================================
 
-
-
+  createBoard(); // display the board with the initial setup
+  determineFirstPlayer(); // pick the first player (player 1)
 
 
 
