@@ -1,5 +1,4 @@
 # Mancala
-Interactive mancala game
 
 
 ## Technologies Used
