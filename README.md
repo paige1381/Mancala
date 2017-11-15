@@ -1,5 +1,5 @@
 # Mancala
-
+This is an interactive mancala game that can be played right on your desktop! In order to play, simply grab a friend and load the Github link found in this markdown in your browser window.
 
 ## Technologies Used
 ### JQuery/JavaScript:
